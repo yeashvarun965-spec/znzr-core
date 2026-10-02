@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZnZr AI</title>
+  
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: #ffffff;
+      color: #111827;
+    }
+
+    .netlify-identity-menu, 
+    .netlify-identity-overlay,
+    iframe#netlify-identity-widget {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100dvh;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px 24px;
+    }
+
+    .glow-heading {
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #2563eb, #7c3aed, #06b6d4, #2563eb);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientFlow 4s ease infinite, neonGlow 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes neonGlow {
+      from {
+        filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.4)) drop-shadow(0 0 15px rgba(124, 58, 237, 0.3));
+      }
+      to {
+        filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.8)) drop-shadow(0 0 30px rgba(6, 182, 212, 0.6));
+      }
+    }
+
+    .sub-tagline {
+      font-size: clamp(0.95rem, 2vw, 1.25rem);
+      color: #6b7280;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .btn-blue-trigger {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .btn-blue-trigger:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    #auth-panel {
+      display: none;
+      width: 100%;
+      max-width: 440px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+      margin-top: 10px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+
+    .btn-google {
+      width: 100%;
+      background: #ffffff;
+      color: #374151;
+      border: 1.5px solid #e5e7eb;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .btn-google:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+
+    .btn-email-toggle {
+      width: 100%;
+      background: #f3f4f6;
+      color: #1f2937;
+      border: 1px solid #e5e7eb;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    #email-expand-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+      opacity: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 0;
+    }
+
+    #email-expand-box.expanded {
+      max-height: 280px;
+      opacity: 1;
+      padding-top: 14px;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .auth-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    #auth-error {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    #app-container {
+      display: none;
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      position: relative;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .floating-logout {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .floating-logout:active {
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 1;
+    }
+
+    /* --- TALL & POWERFUL GEMINI BLUE WAVE GLOW --- */
+    .gemini-wave-container {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140%;
+      height: 520px;
+      pointer-events: none !important;
+      z-index: 50;
+      overflow: hidden;
+      filter: blur(65px);
+      mix-blend-mode: multiply;
+      opacity: 0.92;
+    }
+
+    .wave-blob-1 {
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      width: 600px;
+      height: 420px;
+      background: radial-gradient(circle, #2563eb 0%, #60a5fa 45%, rgba(255,255,255,0) 75%);
+      border-radius: 50%;
+      animation: waveMotion1 7s ease-in-out infinite alternate;
+    }
+
+    .wave-blob-2 {
+      position: absolute;
+      bottom: -10px;
+      right: 5%;
+      width: 650px;
+      height: 450px;
+      background: radial-gradient(circle, #93c5fd 0%, #38bdf8 50%, rgba(255,255,255,0) 80%);
+      border-radius: 50%;
+      animation: waveMotion2 8.5s ease-in-out infinite alternate;
+    }
+
+    .wave-blob-3 {
+      position: absolute;
+      bottom: -20px;
+      left: 28%;
+      width: 520px;
+      height: 380px;
+      background: radial-gradient(circle, #60a5fa 0%, #1d4ed8 55%, rgba(255,255,255,0) 80%);
+      border-radius: 50%;
+      animation: waveMotion3 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes waveMotion1 {
+      0% { transform: translateY(0px) scale(1) rotate(0deg); }
+      50% { transform: translateY(-40px) scale(1.12) rotate(4deg); }
+      100% { transform: translateY(20px) scale(0.95) rotate(-3deg); }
+    }
+
+    @keyframes waveMotion2 {
+      0% { transform: translateY(20px) scale(1.05) rotate(0deg); }
+      50% { transform: translateY(-45px) scale(0.92) rotate(-5deg); }
+      100% { transform: translateY(-15px) scale(1.18) rotate(3deg); }
+    }
+
+    @keyframes waveMotion3 {
+      0% { transform: scale(0.92); opacity: 0.75; }
+      100% { transform: scale(1.22); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="login-screen">
+    <h1 class="glow-heading">Welcome to<br>Next-Gen Intelligence</h1>
+    <p class="sub-tagline">Access your private Dual-Brain system seamlessly.</p>
+
+    <button id="trigger-btn" class="btn-blue-trigger" onclick="openAuthPanel()">
+      <span>Get Started / Login</span>
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+      </svg>
+    </button>
+
+    <div id="auth-panel">
+      <div class="auth-title">Choose how to continue</div>
+
+      <a class="btn-google" href="/.netlify/identity/authorize?provider=google">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        Continue with Google
+      </a>
+
+      <button class="btn-email-toggle" onclick="toggleEmailBox()">
+        <span>Continue with Email</span>
+        <span id="expand-arrow">▾</span>
+      </button>
+
+      <form id="email-expand-box" onsubmit="handleEmailAuth(event)">
+        <input type="email" id="auth-email" class="auth-input" placeholder="Your email address" required />
+        <input type="password" id="auth-pass" class="auth-input" placeholder="Password" required />
+        <div id="auth-error"></div>
+        <button type="submit" class="btn-submit">Sign In / Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="app-container">
+    <button class="floating-logout" onclick="performLogout()">Logout</button>
+    
+    <iframe 
+      id="app-frame"
+      src="https://udify.app/chat/PbdCLLCHq3HL5TYt" 
+      allow="camera; microphone; clipboard-read; clipboard-write; fullscreen"
+      title="Terminal">
+    </iframe>
+
+    <div class="gemini-wave-container">
+      <div class="wave-blob-1"></div>
+      <div class="wave-blob-2"></div>
+      <div class="wave-blob-3"></div>
+    </div>
+  </div>
+
+  <script>
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.getElementById('app-container');
+    const authPanel = document.getElementById('auth-panel');
+    const triggerBtn = document.getElementById('trigger-btn');
+    const emailExpandBox = document.getElementById('email-expand-box');
+    const expandArrow = document.getElementById('expand-arrow');
+    const authError = document.getElementById('auth-error');
+
+    function updateUI(user) {
+      if (user) {
+        loginScreen.style.display = 'none';
+        appContainer.style.display = 'block';
+      } else {
+        loginScreen.style.display = 'flex';
+        appContainer.style.display = 'none';
+      }
+    }
+
+    netlifyIdentity.on('init', user => updateUI(user));
+    netlifyIdentity.on('login', user => {
+      updateUI(user);
+    });
+
+    function performLogout() {
+      netlifyIdentity.logout();
+      window.location.reload();
+    }
+
+    function openAuthPanel() {
+      triggerBtn.style.display = 'none';
+      authPanel.style.display = 'block';
+    }
+
+    function toggleEmailBox() {
+      const isOpen = emailExpandBox.classList.toggle('expanded');
+      expandArrow.innerText = isOpen ? '▴' : '▾';
+    }
+
+    async function handleEmailAuth(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-pass').value;
+      authError.style.display = 'none';
+
+      try {
+        await netlifyIdentity.gotrue.login(email, password, true);
+        window.location.reload();
+      } catch (err) {
+        try {
+          await netlifyIdentity.gotrue.signup(email, password);
+          await netlifyIdentity.gotrue.login(email, password, true);
+          window.location.reload();
+        } catch (signupErr) {
+          authError.innerText = signupErr.message || err.message;
+          authError.style.display = 'block';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
