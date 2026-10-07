@@ -5,25 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mr. Y_x_G | ZnZr - AI</title>
   
-  <!-- App Icon / Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
-  <!-- Search Engine, Browser & App Branding -->
   <meta name="author" content="Mr. Y_X_G">
   <meta name="application-name" content="Mr. Y_X_G">
   <meta name="description" content="ZnZr AI - Created by Mr. Y_X_G. Access your private Dual-Brain system seamlessly.">
-
-  <!-- Social & Google Search Preview Tags -->
-  <meta property="og:site_name" content="Mr. Y_X_G">
-  <meta property="og:title" content="Mr. Y_X_G | ZnZr AI">
-  <meta property="og:description" content="Access your private Dual-Brain system seamlessly.">
-  <meta property="og:image" content="https://znzr-core.vercel.app/favicon.png">
-  <meta property="og:type" content="website">
-  
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
   <style>
     * {
@@ -42,7 +29,7 @@
       color: #111827;
     }
 
-    #login-screen {
+    #start-screen {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -52,6 +39,12 @@
       max-width: 1100px;
       margin: 0 auto;
       padding: 30px 24px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 200;
+      background: #ffffff;
+      transition: opacity 0.3s ease;
     }
 
     .glow-heading {
@@ -88,170 +81,39 @@
       text-align: left;
     }
 
-    .btn-blue-trigger {
+    .btn-start-trigger {
       background: #2563eb;
       color: #ffffff;
       border: none;
-      padding: 14px 28px;
-      font-size: 1rem;
+      padding: 16px 36px;
+      font-size: 1.1rem;
       font-weight: 600;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
+      gap: 12px;
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
       transition: all 0.2s ease;
     }
 
-    .btn-blue-trigger:hover {
+    .btn-start-trigger:hover {
       background: #1d4ed8;
       transform: translateY(-2px);
     }
 
-    #auth-panel {
-      display: none;
-      width: 100%;
-      max-width: 440px;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-      margin-top: 10px;
-      animation: fadeIn 0.25s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .auth-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 16px;
-    }
-
-    .btn-google {
-      width: 100%;
-      background: #ffffff;
-      color: #374151;
-      border: 1.5px solid #e5e7eb;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      cursor: pointer;
-      margin-bottom: 12px;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .btn-google:hover {
-      background: #f9fafb;
-      border-color: #d1d5db;
-    }
-
-    .btn-email-toggle {
-      width: 100%;
-      background: #f3f4f6;
-      color: #1f2937;
-      border: 1px solid #e5e7eb;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
-    #email-expand-box {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease, opacity 0.3s ease;
-      opacity: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 0;
-    }
-
-    #email-expand-box.expanded {
-      max-height: 280px;
-      opacity: 1;
-      padding-top: 14px;
-    }
-
-    .auth-input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .auth-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 4px;
-    }
-
-    #auth-error {
-      color: #ef4444;
-      font-size: 0.8rem;
-      margin-top: 4px;
-      display: none;
+    .btn-start-trigger:active {
+      transform: scale(0.97);
     }
 
     #app-container {
-      display: none;
+      display: block;
       width: 100%;
       height: 100%;
       height: 100dvh;
       position: relative;
       background: #ffffff;
       overflow: hidden;
-    }
-
-    .floating-logout {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      z-index: 999;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid #d1d5db;
-      color: #374151;
-      padding: 6px 14px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    }
-
-    .floating-logout:active {
-      color: #ef4444;
-      border-color: #ef4444;
     }
 
     iframe {
@@ -264,7 +126,110 @@
       z-index: 1;
     }
 
-    /* --- TALL & POWERFUL GEMINI BLUE WAVE GLOW --- */
+    /* --- SMALLER FLOATING WHITE OUTLINE RUN BUTTON (▶️) --- */
+    .floating-run-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1.5px solid #ffffff;
+      color: #ffffff;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      backdrop-filter: blur(5px);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .floating-run-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    /* --- CODE PANEL POPUP --- */
+    #actionPanel {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 15px;
+      width: 320px;
+      background: #111827;
+      border: 1px solid #374151;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border-radius: 12px;
+      z-index: 150;
+      padding: 14px;
+      color: #00ff66;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 14px;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 6px;
+    }
+    .panel-close {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      color: #9ca3af;
+    }
+    .panel-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    select {
+      background: #030712;
+      border: 1px solid #00ff66;
+      color: #00ff66;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      outline: none;
+      font-size: 13px;
+    }
+    #codeEditorContainer {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      background: #030712;
+      border: 1px solid #374151;
+      color: #fff;
+      padding: 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      resize: none;
+      outline: none;
+    }
+    textarea:focus { border-color: #00ff66; }
+    .run-code-btn {
+      background: #00ff66;
+      color: #000;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: monospace;
+    }
+
+    /* --- TALL GEMINI BLUE WAVE GLOW --- */
     .gemini-wave-container {
       position: absolute;
       bottom: -40px;
@@ -333,48 +298,50 @@
 </head>
 <body>
 
-  <div id="login-screen">
+  <!-- Landing / Start Screen -->
+  <div id="start-screen">
     <h1 class="glow-heading">Welcome to<br>Next-Gen Intelligence</h1>
     <p class="sub-tagline">Access your private Dual-Brain system seamlessly.</p>
 
-    <button id="trigger-btn" class="btn-blue-trigger" onclick="openAuthPanel()">
-      <span>Get Started / Login</span>
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+    <button id="start-btn" class="btn-start-trigger" onclick="startApp()">
+      <span>Start ZnZr</span>
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
       </svg>
     </button>
-
-    <div id="auth-panel">
-      <div class="auth-title">Choose how to continue</div>
-
-      <!-- Google Login Button Connected to Firebase -->
-      <button class="btn-google" onclick="handleGoogleLogin()">
-        <svg width="18" height="18" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-        </svg>
-        Continue with Google
-      </button>
-
-      <button class="btn-email-toggle" onclick="toggleEmailBox()">
-        <span>Continue with Email</span>
-        <span id="expand-arrow">▾</span>
-      </button>
-
-      <form id="email-expand-box" onsubmit="handleEmailAuth(event)">
-        <input type="email" id="auth-email" class="auth-input" placeholder="Your email address" required />
-        <input type="password" id="auth-pass" class="auth-input" placeholder="Password" required />
-        <div id="auth-error"></div>
-        <button type="submit" class="btn-submit">Sign In / Sign Up</button>
-      </form>
-    </div>
   </div>
 
+  <!-- Chat Frame Screen -->
   <div id="app-container">
-    <button class="floating-logout" onclick="performLogout()">Logout</button>
-    
+    <!-- Smaller Floating White Outline Run Button -->
+    <button class="floating-run-btn" onclick="toggleActionPanel()" title="Code Runner">▶</button>
+
+    <!-- Popup Dropdown & Code Panel -->
+    <div id="actionPanel">
+      <div class="panel-header">
+        <span>ZnZr Code Runner</span>
+        <button class="panel-close" onclick="toggleActionPanel()">×</button>
+      </div>
+      <div class="panel-body">
+        <label style="font-size:12px; color:#9ca3af;">Select Language:</label>
+        <select id="langSelect" onchange="showEditor()">
+          <option value="" disabled selected>-- Choose Language --</option>
+          <option value="html">HTML / CSS</option>
+          <option value="python">Python (py)</option>
+          <option value="cpp">C++</option>
+          <option value="java">Java</option>
+          <option value="javascript">JavaScript (JS)</option>
+          <option value="sql">SQL Query</option>
+        </select>
+
+        <!-- Typing Panel (Appears after selection) -->
+        <div id="codeEditorContainer">
+          <textarea id="codeTextarea" placeholder="// Yahan apna code likhe..."></textarea>
+          <button class="run-code-btn" onclick="executeCode()">🚀 Run Code</button>
+        </div>
+      </div>
+    </div>
+
     <iframe 
       id="app-frame"
       src="https://udify.app/chat/PbdCLLCHq3HL5TYt" 
@@ -390,95 +357,28 @@
   </div>
 
   <script>
-    // --- 1. Firebase Configuration (Apne Dashboard se) ---
-    const firebaseConfig = {
-      apiKey: "AIzaSyC94OMKnXeSrE3VNNrmCJi7BBQfiboqP0M",
-      authDomain: "znzr-core.firebaseapp.com",
-      projectId: "znzr-core",
-      storageBucket: "znzr-core.firebasestorage.app",
-      messagingSenderId: "383884080443",
-      appId: "1:383884080443:web:66059b86fe6c05ebf8731e"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-    // DOM Elements
-    const loginScreen = document.getElementById('login-screen');
-    const appContainer = document.getElementById('app-container');
-    const authPanel = document.getElementById('auth-panel');
-    const triggerBtn = document.getElementById('trigger-btn');
-    const emailExpandBox = document.getElementById('email-expand-box');
-    const expandArrow = document.getElementById('expand-arrow');
-    const authError = document.getElementById('auth-error');
-
-    // --- 2. Auth State Observer (Auto-detect login state) ---
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // User logged in hai -> direct app screen dikhao
-        loginScreen.style.display = 'none';
-        appContainer.style.display = 'block';
-      } else {
-        // User logout hai -> login screen dikhao
-        loginScreen.style.display = 'flex';
-        appContainer.style.display = 'none';
-      }
-    });
-
-    // --- 3. Google Sign-In Function ---
-    function handleGoogleLogin() {
-      authError.style.display = 'none';
-      auth.signInWithPopup(googleProvider)
-        .then((result) => {
-          console.log("Logged in user:", result.user.email);
-        })
-        .catch((error) => {
-          authError.innerText = error.message;
-          authError.style.display = 'block';
-        });
+    function startApp() {
+      const startScreen = document.getElementById('start-screen');
+      startScreen.style.opacity = '0';
+      setTimeout(() => {
+        startScreen.style.display = 'none';
+      }, 300);
     }
 
-    // --- 4. Email / Password Function (SignIn ya Auto-SignUp) ---
-    async function handleEmailAuth(e) {
-      e.preventDefault();
-      const email = document.getElementById('auth-email').value;
-      const password = document.getElementById('auth-pass').value;
-      authError.style.display = 'none';
-
-      try {
-        await auth.signInWithEmailAndPassword(email, password);
-      } catch (err) {
-        // Agar user exist nahi karta toh auto-signup try karega
-        if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-          try {
-            await auth.createUserWithEmailAndPassword(email, password);
-          } catch (signupErr) {
-            authError.innerText = signupErr.message;
-            authError.style.display = 'block';
-          }
-        } else {
-          authError.innerText = err.message;
-          authError.style.display = 'block';
-        }
-      }
+    function toggleActionPanel() {
+      const panel = document.getElementById('actionPanel');
+      panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
     }
 
-    // --- 5. Logout Function ---
-    function performLogout() {
-      auth.signOut().then(() => {
-        window.location.reload();
-      });
+    function showEditor() {
+      const container = document.getElementById('codeEditorContainer');
+      container.style.display = 'flex';
     }
 
-    function openAuthPanel() {
-      triggerBtn.style.display = 'none';
-      authPanel.style.display = 'block';
-    }
-
-    function toggleEmailBox() {
-      const isOpen = emailExpandBox.classList.toggle('expanded');
-      expandArrow.innerText = isOpen ? '▴' : '▾';
+    function executeCode() {
+      const lang = document.getElementById('langSelect').value;
+      const code = document.getElementById('codeTextarea').value;
+      alert(`Running ${lang.toUpperCase()} code successfully!\nLength: ${code.length} characters.`);
     }
   </script>
 </body>
